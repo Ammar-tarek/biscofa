@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BISCOFA — عرض الحملة الإبداعية</title>
+    <meta name="description" content="BISCOFA — A Perfect Mix. عرض حملة إبداعية.">
+
+    <!-- Premium Google Fonts for Arabic Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Almarai:wght@300;400;700;800&family=El+Messiri:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Readex+Pro:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&family=Zain:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- GSAP & ScrollTrigger for Hero Scroll Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════
+           TOKENS & TYPOGRAPHY SYSTEM
+           ═══════════════════════════════════════════════ */
+        :root {
+            --cream:    #F7F3EB;
+            --cream-2:  #EDE8DC;
+            --coffee:   #3D2A1E;
+            --coffee-m: #5C4033;
+            --biscuit:  #C48B57;
+            --biscuit-l:#DCAA76;
+            --sage:     #A3B19B;
+            --blush:    #DDA7A5;
+            --taupe:    #B4A396;
+            --ink:      #110E0B;
+            --ink-2:    #1A1613;
+            --white:    #FFFFFF;
+
+            /* Default Typography: Modern Luxury Editorial (Alexandria + IBM Plex Sans Arabic) */
+            --ff:       'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+            --ffd:      'Alexandria', sans-serif;
+            --title-weight: 800;
+            --title-tracking: -0.02em;
+            --ease:     cubic-bezier(.22,.61,.36,1);
+        }
+
+        /* ── Typography Presets ── */
+        body[data-font="alexandria-ibm"] {
+            --ff: 'IBM Plex Sans Arabic', sans-serif;
+            --ffd: 'Alexandria', sans-serif;
+            --title-weight: 800;
+            --title-tracking: -0.02em;
+        }
+        body[data-font="readex"] {
+            --ff: 'Readex Pro', sans-serif;
+            --ffd: 'Readex Pro', sans-serif;
+            --title-weight: 700;
+            --title-tracking: -0.01em;
+        }
+        body[data-font="tajawal-almarai"] {
+            --ff: 'Almarai', sans-serif;
+            --ffd: 'Tajawal', sans-serif;
+            --title-weight: 800;
+            --title-tracking: normal;
+        }
+        body[data-font="elmessiri"] {
+            --ff: 'IBM Plex Sans Arabic', sans-serif;
+            --ffd: 'El Messiri', serif;
+            --title-weight: 700;
+            --title-tracking: normal;
+        }
+        body[data-font="zain-alexandria"] {
+            --ff: 'Alexandria', sans-serif;
+            --ffd: 'Zain', sans-serif;
+            --title-weight: 900;
+            --title-tracking: normal;
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESET & GLOBAL
+           ═══════════════════════════════════════════════ */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{
+            font-family:var(--ff);
+            background:var(--ink);
+            color:var(--cream);
+            overflow-x:hidden;
+            line-height:1.8;
+            letter-spacing:normal;
+            -webkit-font-smoothing:antialiased;
+            transition:font-family 0.3s ease;
+        }
+        img{max-width:100%;display:block}
+        a{text-decoration:none;color:inherit}
+        button{border:none;cursor:pointer;font-family:inherit;background:none}
+        ::selection{background:var(--biscuit);color:var(--cream)}
+        ::-webkit-scrollbar{width:5px}
+        ::-webkit-scrollbar-track{background:var(--ink)}
+        ::-webkit-scrollbar-thumb{background:var(--coffee-m);border-radius:10px}
+
+        /* Grain */
+        .grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.12;
+            background-image:url('https://www.transparenttextures.com/patterns/stardust.png')}
+
+        /* Progress */
+        .progress{position:fixed;top:0;right:0;height:3px;background:var(--biscuit);z-index:10001;width:0}
+
+        /* ═══════════════════════════════════════════════
+           SLIDE SYSTEM
+           ═══════════════════════════════════════════════ */
+        .s{position:relative;min-height:100vh;display:flex;align-items:center;
+            justify-content:center;padding:7rem 2rem;overflow:hidden}
+        .s-inner{max-width:1160px;width:100%;margin:0 auto;position:relative;z-index:2}
+
+        .s-idx{font-size:.75rem;font-weight:700;letter-spacing:.25em;
+            color:var(--biscuit);opacity:.75;margin-bottom:1.2rem;display:block}
+        .s-title{
+            font-family:var(--ffd);
+            font-size:clamp(2.2rem,5.5vw,4.4rem);
+            font-weight:var(--title-weight);
+            letter-spacing:var(--title-tracking);
+            line-height:1.2;
+            margin-bottom:1.5rem;
+        }
+        .s-sub{
+            font-family:var(--ff);
+            font-size:clamp(1rem,2vw,1.25rem);
+            font-weight:400;
+            line-height:2;
+            color:rgba(247,243,235,.68);
+            max-width:620px;
+        }
+        .s-quote{font-family:var(--ffd);font-size:clamp(1.6rem,3.5vw,2.4rem);
+            font-weight:var(--title-weight);line-height:1.4;margin-bottom:1.5rem}
+        .accent{color:var(--biscuit)}
+        .light .s-sub{color:rgba(61,42,30,.62)}
+        .light .s-idx{color:var(--coffee-m)}
+        .light .accent{color:var(--biscuit)}
+
+        /* Two-column grid */
+        .g2{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+        @media(max-width:860px){.g2{grid-template-columns:1fr;gap:3rem}}
+
+        /* Images */
+        .s-img{border-radius:1.8rem;box-shadow:0 30px 80px -20px rgba(0,0,0,.25);
+            transition:transform .7s var(--ease)}
+        .s-img:hover{transform:scale(1.015)}
+        .s-img.tilt{transform:rotate(1.5deg)}
+        .s-img.tilt:hover{transform:rotate(0) scale(1.015)}
+
+        /* ═══════════════════════════════════════════════
+           SIDE DOTS
+           ═══════════════════════════════════════════════ */
+        .dots{position:fixed;left:1.4rem;top:50%;transform:translateY(-50%);
+            display:flex;flex-direction:column;gap:.65rem;z-index:1000}
+        .dots a{display:block;width:9px;height:9px;border-radius:50%;
+            background:rgba(247,243,235,.12);transition:all .4s var(--ease);position:relative}
+        .dots a.on{background:var(--biscuit);transform:scale(1.35)}
+        .dots.on-light a{background:rgba(61,42,30,.12)}
+        .dots.on-light a.on{background:var(--biscuit)}
+        @media(max-width:860px){.dots{display:none}}
+
+        /* ═══════════════════════════════════════════════
+           COVER (WARM ELEGANT CAFÉ PALETTE)
+           ═══════════════════════════════════════════════ */
+        .cover {
+            background: #F9F4EB;
+            color: var(--coffee);
+            text-align: center;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ═══════════════════════════════════════════════
+           MODERN AGENCY HERO BACKGROUND SYSTEM
+           ═══════════════════════════════════════════════ */
+        
+        /* 1. Interactive Mouse Spotlight Glow */
+        .hero-cursor-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle 460px at var(--mx, 50%) var(--my, 40%), rgba(226, 178, 126, 0.25), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        /* 2. Fluid Liquid Caramel & Latte Auroras (Animated Mesh) */
+        .hero-mesh-canvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .mesh-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.42;
+            will-change: transform;
+        }
+        .blob-1 {
+            width: 550px;
+            height: 500px;
+            background: radial-gradient(circle, #E6BC8E 0%, rgba(230,188,142,0) 70%);
+            top: -12%;
+            left: 2%;
+            animation: meshDrift1 16s ease-in-out infinite alternate;
+        }
+        .blob-2 {
+            width: 500px;
+            height: 540px;
+            background: radial-gradient(circle, #C8925E 0%, rgba(200,146,94,0) 70%);
+            bottom: -15%;
+            right: 3%;
+            animation: meshDrift2 18s ease-in-out infinite alternate;
+        }
+        .blob-3 {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, #E8D9C2 0%, rgba(232,217,194,0) 70%);
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: meshPulse 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes meshDrift1 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, 45px) scale(1.12); }
+            100% { transform: translate(-35px, 85px) scale(0.95); }
+        }
+        @keyframes meshDrift2 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-55px, -45px) scale(1.1); }
+            100% { transform: translate(45px, -75px) scale(0.92); }
+        }
+        @keyframes meshPulse {
+            0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.28; }
+            100% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.5; }
+        }
+
+        /* 3. Luxury Editorial Typographic Watermarks */
+        .hero-watermark {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+        }
+        .watermark-top {
+            top: 5%;
+            font-family: var(--ffd);
+            font-size: clamp(3.5rem, 12vw, 9.5rem);
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(196, 139, 87, 0.14);
+            opacity: 0.85;
+            white-space: nowrap;
+            animation: textFloatSlow 12s ease-in-out infinite alternate;
+        }
+        .watermark-bottom {
+            bottom: 5%;
+            font-family: var(--ffd);
+            font-size: clamp(2.5rem, 8vw, 6.5rem);
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            color: transparent;
+            -webkit-text-stroke: 1.2px rgba(196, 139, 87, 0.12);
+            opacity: 0.75;
+            white-space: nowrap;
+            animation: textFloatSlow 14s ease-in-out 1s infinite alternate-reverse;
+        }
+        @keyframes textFloatSlow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        /* 4. Modern Glassmorphic Floating Aura Rings */
+        .hero-glass-ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .glass-ring-1 {
+            width: 320px;
+            height: 320px;
+            top: 10%;
+            right: 6%;
+            border: 1.5px solid rgba(196, 139, 87, 0.2);
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(196,139,87,0.03) 100%);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 20px 45px rgba(196,139,87,0.07);
+            animation: ringFloat 10s ease-in-out infinite alternate;
+        }
+        .glass-ring-2 {
+            width: 230px;
+            height: 230px;
+            bottom: 12%;
+            left: 7%;
+            border: 1.5px solid rgba(196, 139, 87, 0.18);
+            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(196,139,87,0.03) 100%);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 15px 35px rgba(196,139,87,0.06);
+            animation: ringFloat 11s ease-in-out 1.5s infinite alternate-reverse;
+        }
+        @keyframes ringFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-16px) rotate(8deg); }
+        }
+
+        /* 5. Cinematic Warm Café Light Beam */
+        .hero-light-beam {
+            position: absolute;
+            top: -20%;
+            right: 15%;
+            width: 450px;
+            height: 140%;
+            background: linear-gradient(115deg, rgba(255, 255, 255, 0.4) 0%, rgba(235, 195, 150, 0.14) 40%, transparent 80%);
+            transform: rotate(-25deg);
+            pointer-events: none;
+            opacity: 0.65;
+            filter: blur(35px);
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .glass-ring-1, .glass-ring-2 { display: none; }
+            .hero-light-beam { opacity: 0.35; width: 250px; }
+            .watermark-top { font-size: clamp(2.8rem, 11vw, 4.5rem); }
+            .watermark-bottom { font-size: clamp(2rem, 7vw, 3.2rem); }
+        }
+
+        /* Floating coffee beans */
+        .beans { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+        .bn {
+            position: absolute; top: -8%; width: 28px; height: 42px; background: #6F4E37;
+            border-radius: 50% / 60%; opacity: .07; animation: bnf linear infinite;
+        }
+        .bn::before {
+            content: ""; position: absolute; top: 14%; left: 50%; width: 1.5px; height: 70%;
+            background: #DCAA76; transform: translateX(-50%) rotate(8deg);
+            border-radius: 2px; opacity: .4;
+        }
+        /* ═══════════════════════════════════════════════
+           HERO BACKGROUND FLOATING SLANTED CUPS (LIVELY 3D MOVES)
+           ═══════════════════════════════════════════════ */
+        .hero-bg-cups {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 2;
+            perspective: 1200px;
+        }
+
+        .hero-bg-cup {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform, opacity;
+            transition: opacity 0.5s ease;
+        }
+
+        .hero-bg-cup img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(61, 42, 30, 0.25));
+            transform-style: preserve-3d;
+        }
+
+        /* Cup 1: Saudi Cultural Cup (Left Side) */
+        .hero-bg-cup-1 {
+            width: 185px;
+            height: 290px;
+            top: 20%;
+            left: 4%;
+            opacity: 0.88;
+            animation: bgCupSway1 5.5s ease-in-out infinite alternate;
+        }
+
+        /* Cup 2: Egypt Cultural Cup (Lower-Left) */
+        .hero-bg-cup-2 {
+            width: 170px;
+            height: 265px;
+            bottom: 5%;
+            left: 12%;
+            opacity: 0.82;
+            animation: bgCupSway2 6.5s ease-in-out 0.8s infinite alternate;
+        }
+
+        /* Cup 3: New York Cultural Cup (Upper-Right) */
+        .hero-bg-cup-3 {
+            width: 155px;
+            height: 245px;
+            top: 8%;
+            right: 5%;
+            opacity: 0.8;
+            animation: bgCupSway3 6s ease-in-out 1.2s infinite alternate;
+        }
+
+        @keyframes bgCupSway1 {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(14deg) scale(1);
+            }
+            33% {
+                transform: translateY(-24px) translateX(12px) rotate(19deg) scale(1.04);
+            }
+            66% {
+                transform: translateY(-36px) translateX(-6px) rotate(10deg) scale(1.06);
+            }
+            100% {
+                transform: translateY(-14px) translateX(-14px) rotate(16deg) scale(1.02);
+            }
+        }
+
+        @keyframes bgCupSway2 {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(-16deg) scale(1);
+            }
+            33% {
+                transform: translateY(-28px) translateX(-10px) rotate(-21deg) scale(1.05);
+            }
+            66% {
+                transform: translateY(-40px) translateX(8px) rotate(-11deg) scale(1.07);
+            }
+            100% {
+                transform: translateY(-12px) translateX(14px) rotate(-18deg) scale(1.03);
+            }
+        }
+
+        @keyframes bgCupSway3 {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(11deg) scale(1);
+            }
+            33% {
+                transform: translateY(-26px) translateX(-12px) rotate(6deg) scale(1.06);
+            }
+            66% {
+                transform: translateY(-38px) translateX(10px) rotate(16deg) scale(1.08);
+            }
+            100% {
+                transform: translateY(-15px) translateX(4px) rotate(9deg) scale(1.02);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .hero-bg-cup-1 { width: 145px; height: 225px; left: 2%; opacity: 0.72; }
+            .hero-bg-cup-2 { width: 135px; height: 210px; left: 6%; opacity: 0.68; }
+            .hero-bg-cup-3 { width: 125px; height: 195px; right: 2%; opacity: 0.65; }
+        }
+
+        @media (max-width: 860px) {
+            .hero-bg-cups { display: none; }
+        }
+
+        /* ═══════════════════════════════════════════════
+           HERO SCROLL-DRIVEN BISCOFA CUP SYSTEM (LIVELY 3D IDLE)
+           ═══════════════════════════════════════════════ */
+        .hero-cup-container {
+            position: absolute;
+            bottom: 4%;
+            right: 8%;
+            width: 280px;
+            height: 440px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 6;
+            pointer-events: none;
+            perspective: 1200px;
+            transform-origin: center center;
+            will-change: transform, opacity;
+        }
+
+        .hero-cup-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 25px 45px rgba(61, 42, 30, 0.28)) drop-shadow(0 8px 18px rgba(0,0,0,0.12));
+            transform-origin: center center;
+            transform-style: preserve-3d;
+            will-change: transform, filter;
+            animation: heroCupIdle 5.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroCupIdle {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(-8deg) rotateY(6deg) scale(1);
+            }
+            33% {
+                transform: translateY(-22px) translateX(-8px) rotate(-4deg) rotateY(-8deg) scale(1.03);
+            }
+            66% {
+                transform: translateY(-35px) translateX(6px) rotate(-11deg) rotateY(10deg) scale(1.06);
+            }
+            100% {
+                transform: translateY(-16px) translateX(10px) rotate(-6deg) rotateY(-4deg) scale(1.02);
+            }
+        }
+
+        .hero-cup-shadow {
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 190px;
+            height: 28px;
+            background: radial-gradient(ellipse, rgba(61, 42, 30, 0.4) 0%, rgba(61, 42, 30, 0) 72%);
+            border-radius: 50%;
+            filter: blur(6px);
+            z-index: -1;
+            will-change: transform, opacity;
+            animation: heroCupShadowIdle 5.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroCupShadowIdle {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.4; }
+            50% { transform: translateX(-50%) scale(0.75); opacity: 0.2; }
+            100% { transform: translateX(-50%) scale(0.9); opacity: 0.32; }
+        }
+
+        .hero-cup-aura {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(226, 178, 126, 0.45) 0%, rgba(196, 139, 87, 0) 70%);
+            filter: blur(40px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: -2;
+            will-change: transform, opacity;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 5;
+            will-change: transform, opacity, filter;
+        }
+
+        @media (max-width: 1100px) {
+            .hero-cup-container {
+                width: 230px;
+                height: 360px;
+                right: 4%;
+                bottom: 4%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-cup-container {
+                width: 180px;
+                height: 280px;
+                right: 50%;
+                transform: translateX(50%);
+                bottom: 2%;
+                opacity: 0.85;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .hero-cup-container {
+                width: 220px;
+                height: 350px;
+                right: 5%;
+                bottom: 5%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-cup-container {
+                width: 165px;
+                height: 260px;
+                right: auto;
+                left: 50%;
+                margin-left: -82px;   /* centre without transform (GSAP owns transform) */
+                bottom: 3%;
+                opacity: 0.92;
+            }
+        }
+
+        /* Static, calm experience for reduced-motion users */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-cup-float { animation: none; }
+        }
+
+        .c-logo {
+            height: 150px;
+            margin: 0 auto 1.8rem;
+            object-fit: contain;
+            filter: drop-shadow(0 14px 28px rgba(61,42,30,0.09));
+            transition: transform 0.5s var(--ease);
+        }
+        .c-logo:hover {
+            transform: scale(1.04);
+        }
+        .c-tag {
+            font-family: var(--ffd);
+            font-size: clamp(2.8rem, 7vw, 5.6rem);
+            font-weight: var(--title-weight);
+            letter-spacing: var(--title-tracking);
+            line-height: 1.15;
+            margin-bottom: .8rem;
+            color: var(--coffee);
+        }
+        .c-sub {
+            font-size: clamp(.95rem, 1.8vw, 1.2rem);
+            color: rgba(61, 42, 30, 0.68);
+            margin-bottom: 1.5rem;
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+        }
+        .c-big {
+            font-family: var(--ffd);
+            font-size: clamp(1.15rem, 2.5vw, 1.7rem);
+            color: #2D1E15;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            font-weight: 600;
+        }
+        .c-big em { color: var(--biscuit); font-style: normal; font-weight: 800; }
+        .c-divider {
+            width: 48px;
+            height: 2.5px;
+            background: var(--biscuit);
+            margin: 0 auto 2.5rem;
+            opacity: .6;
+        }
+        .c-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .cover .btn-ghost {
+            border: 1.5px solid rgba(61, 42, 30, 0.25);
+            color: var(--coffee);
+        }
+        .cover .btn-ghost:hover {
+            background: rgba(61, 42, 30, 0.06);
+            border-color: var(--coffee);
+        }
+        .c-meta { font-size: .78rem; color: rgba(61, 42, 30, 0.45); font-weight: 600; }
+
+        /* Scroll cue on light café hero */
+        .cover .scroll-cue span { color: rgba(61, 42, 30, 0.5); font-weight: 600; }
+        .cover .sc-dot { border: 1.5px solid rgba(61, 42, 30, 0.3); }
+        .cover .sc-dot::after { background: var(--biscuit); }
+
+        /* ═══════════════════════════════════════════════
+           CAMPAIGN IDEA (transition)
+           ═══════════════════════════════════════════════ */
+        .idea{background:var(--cream);color:var(--coffee);text-align:center}
+        .idea-q{
+            font-family:var(--ffd);
+            font-size:clamp(1.8rem,4.5vw,3.4rem);
+            font-weight:var(--title-weight);
+            letter-spacing:var(--title-tracking);
+            line-height:1.3;
+            margin-bottom:2rem;
+            max-width:800px;
+            margin-left:auto;margin-right:auto;
+        }
+        .idea-body{font-size:1.15rem;color:rgba(61,42,30,.68);max-width:660px;
+            margin:0 auto 3.5rem;line-height:2.1}
+        .idea-journey{display:flex;align-items:center;justify-content:center;
+            gap:1rem;flex-wrap:wrap}
+        .ij-step{background:var(--white);border-radius:1.2rem;padding:1.5rem 1.8rem;
+            text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.04);
+            transition:transform .4s var(--ease);min-width:110px}
+        .ij-step:hover{transform:translateY(-5px)}
+        .ij-icon{font-size:2rem;margin-bottom:.4rem}
+        .ij-label{font-size:.82rem;font-weight:700;color:var(--coffee)}
+        .ij-arrow{color:var(--biscuit);font-size:1.2rem;opacity:.4}
+
+        /* ═══════════════════════════════════════════════
+           EXPERIENCE 01 — MAKE YOUR MIX
+           ═══════════════════════════════════════════════ */
+        .exp-mix{background:var(--cream);color:var(--coffee)}
+        .mix-flow{display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap}
+        .mix-step{flex:1;min-width:100px;background:var(--white);border-radius:1rem;
+            padding:1.4rem 1rem;text-align:center;
+            box-shadow:0 4px 16px rgba(0,0,0,.04);transition:transform .4s var(--ease)}
+        .mix-step:hover{transform:translateY(-4px)}
+        .mix-step-icon{font-size:1.6rem;margin-bottom:.4rem}
+        .mix-step-label{font-size:.82rem;font-weight:700}
+
+        /* ═══════════════════════════════════════════════
+           ★ MONTHLY CULTURAL TAKEOVER (ALL CUPS SIDE BY SIDE)
+           ═══════════════════════════════════════════════ */
+        .exp-countries {
+            background: #130F0C;
+            position: relative;
+            overflow: hidden;
+            padding: 8rem 2rem 7rem;
+        }
+
+        .countries-ambient-glow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 900px;
+            height: 450px;
+            background: radial-gradient(ellipse, rgba(196,139,87,0.18) 0%, rgba(20,16,12,0) 70%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .countries-header {
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 4 Cups Side-by-Side Grid Row */
+        .cups-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 4.5rem;
+            align-items: center;
+            justify-items: center;
+        }
+        @media (max-width: 1024px) {
+            .cups-gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3rem;
+            }
+        }
+        @media (max-width: 580px) {
+            .cups-gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        /* Individual Cup Showcase Item - Borderless Clean Floating Stage */
+        .cup-card {
+            background: none;
+            border: none;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Ambient Spotlight Glow directly under each floating cup */
+        .cup-card::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            width: 140px;
+            height: 25px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(8px);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        .cup-card:hover::after {
+            transform: scale(1.2);
+            opacity: 0.8;
+            background: radial-gradient(ellipse, rgba(196,139,87,0.3) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        /* Cup Floating Animation Wrapper */
+        .cup-float-box {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Smooth Rhythmic Wave Floating Animation with Slant */
+        @keyframes cupWaveFloat {
+            0%, 100% { transform: translateY(0px) rotate(var(--base-rot, 0deg)); }
+            50% { transform: translateY(-22px) rotate(calc(var(--base-rot, 0deg) + 2deg)); }
+        }
+
+        /* Individual Slants and Staggered Wave Delays */
+        .cup-card:nth-child(1) .cup-img-elem { 
+            --base-rot: -4.5deg;
+            animation: cupWaveFloat 4.4s ease-in-out infinite; 
+            animation-delay: 0s; 
+        }
+        .cup-card:nth-child(2) .cup-img-elem { 
+            --base-rot: 4deg;
+            animation: cupWaveFloat 4.7s ease-in-out infinite; 
+            animation-delay: 0.7s; 
+        }
+        .cup-card:nth-child(3) .cup-img-elem { 
+            --base-rot: -3.5deg;
+            animation: cupWaveFloat 5.0s ease-in-out infinite; 
+            animation-delay: 1.4s; 
+        }
+        .cup-card:nth-child(4) .cup-img-elem { 
+            --base-rot: 5deg;
+            animation: cupWaveFloat 4.6s ease-in-out infinite; 
+            animation-delay: 2.1s; 
+        }
+
+        /* Big Heroic Cups */
+        .cup-img-elem {
+            max-height: 420px;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 25px 40px rgba(0,0,0,0.65));
+            transition: transform 0.45s var(--ease), filter 0.45s var(--ease);
+            will-change: transform;
+        }
+        @media (max-width: 768px) {
+            .cup-img-elem {
+                max-height: 340px;
+            }
+        }
+        .cup-card:hover .cup-img-elem {
+            transform: scale(1.12) translateY(-14px) rotate(calc(var(--base-rot, 0deg) * 0.6));
+            filter: drop-shadow(0 35px 55px rgba(0,0,0,0.85)) drop-shadow(0 0 30px rgba(196,139,87,0.3));
+        }
+
+        /* General Event Takeover Pillars (3 Key Elements) */
+        .takeover-summary-banner {
+            background: rgba(247, 243, 235, 0.03);
+            border: 1px solid rgba(247, 243, 235, 0.08);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        @media (max-width: 768px) {
+            .takeover-summary-banner {
+                grid-template-columns: 1fr;
+                padding: 1.8rem;
+                gap: 1.5rem;
+            }
+        }
+        .ts-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+        }
+        .ts-icon {
+            font-size: 2rem;
+            line-height: 1;
+            padding: 0.8rem;
+            background: rgba(196, 139, 87, 0.12);
+            border-radius: 1.2rem;
+            color: var(--biscuit);
+            flex-shrink: 0;
+        }
+        .ts-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--cream);
+            margin-bottom: 0.3rem;
+        }
+        .ts-desc {
+            font-size: 0.82rem;
+            color: rgba(247, 243, 235, 0.55);
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════════════
+           EXPERIENCE 02 — SIGNATURE COOKIE
+           ═══════════════════════════════════════════════ */
+        .exp-cookie{padding:0;background:var(--coffee)}
+        .cookie-split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+        .cookie-photo{position:relative;overflow:hidden}
+        .cookie-photo img{width:100%;height:100%;object-fit:cover}
+        .cookie-body{display:flex;flex-direction:column;justify-content:center;padding:4rem 5rem}
+        .cookie-tagline{
+            font-family:var(--ffd);
+            font-size:clamp(1.4rem,3vw,2.2rem);
+            font-weight:600;
+            line-height:1.5;
+            color:var(--cream);
+            margin-bottom:1.5rem;
+        }
+        .cookie-text{font-size:1.05rem;color:rgba(247,243,235,.6);line-height:2;margin-bottom:0}
+        @media(max-width:860px){
+            .cookie-split{grid-template-columns:1fr}
+            .cookie-photo{height:55vh}
+            .cookie-body{padding:3rem 2rem}
+        }
+
+        /* ═══════════════════════════════════════════════
+           EXPERIENCE 03 — COFFEE CINEMA
+           ═══════════════════════════════════════════════ */
+        .exp-cinema {
+            background: #0E0B08;
+            position: relative;
+            overflow: hidden;
+        }
+        .cinema-frame {
+            position: relative;
+            border-radius: 2.2rem;
+            overflow: hidden;
+            border: 1px solid rgba(196, 139, 87, 0.3);
+            box-shadow: 0 30px 80px -15px rgba(0,0,0,0.85), 0 0 50px rgba(196, 139, 87, 0.15);
+            transition: transform 0.6s var(--ease), border-color 0.4s ease;
+        }
+        .cinema-frame:hover {
+            transform: scale(1.02);
+            border-color: var(--biscuit);
+        }
+        .cinema-clear-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: brightness(1.02) contrast(1.05);
+        }
+        .cinema-frame-badge {
+            position: absolute;
+            bottom: 1.2rem;
+            right: 1.2rem;
+            background: rgba(17, 14, 11, 0.85);
+            backdrop-filter: blur(12px);
+            color: var(--cream);
+            border: 1px solid rgba(196, 139, 87, 0.35);
+            padding: 0.5rem 1.1rem;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .cinema-chips { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 2rem; }
+        .cinema-chip {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.7rem 1.6rem; border: 1px solid rgba(247,243,235,0.12);
+            background: rgba(247,243,235,0.03);
+            border-radius: 100px; font-size: 0.88rem; font-weight: 700;
+            color: rgba(247,243,235,0.8); transition: all 0.35s var(--ease);
+        }
+        .cinema-chip:hover {
+            border-color: var(--biscuit);
+            background: rgba(196,139,87,0.15);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════════════════
+           EXPERIENCE 04 — THE SECRET (LIGHTING & CLOSING NEON EFFECT)
+           ═══════════════════════════════════════════════ */
+        .exp-secret {
+            background: #0D0A08;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .secret-stage {
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Neon Question Mark Container */
+        .secret-neon-box {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 1.5rem auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Pulsing & Flickering Glow Ring */
+        .secret-neon-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid var(--biscuit);
+            animation: neonRingPulse 3.5s ease-in-out infinite;
+        }
+
+        /* Keyframe for Lighting Up & Closing (Blinking Neon Sign) */
+        @keyframes neonRingPulse {
+            0%, 100% {
+                border-color: #E2B686;
+                box-shadow: 0 0 25px rgba(226, 182, 134, 0.6), inset 0 0 25px rgba(226, 182, 134, 0.4);
+                opacity: 1;
+            }
+            45% {
+                border-color: #E2B686;
+                box-shadow: 0 0 35px rgba(226, 182, 134, 0.8), inset 0 0 35px rgba(226, 182, 134, 0.6);
+                opacity: 1;
+            }
+            50% {
+                border-color: rgba(196, 139, 87, 0.15);
+                box-shadow: none;
+                opacity: 0.25; /* OFF / CLOSING */
+            }
+            54% {
+                border-color: #E2B686;
+                box-shadow: 0 0 20px rgba(226, 182, 134, 0.7);
+                opacity: 0.9; /* QUICK FLICKER */
+            }
+            57% {
+                border-color: rgba(196, 139, 87, 0.1);
+                box-shadow: none;
+                opacity: 0.2; /* OFF */
+            }
+            62% {
+                border-color: #E2B686;
+                box-shadow: 0 0 40px rgba(226, 182, 134, 0.85), inset 0 0 30px rgba(226, 182, 134, 0.5);
+                opacity: 1; /* BACK ON */
+            }
+        }
+
+        /* The Arabic Question Mark with Realistic Neon Sign Lighting & Dimming */
+        @keyframes neonMarkGlow {
+            0%, 100% {
+                color: #FFF8EE;
+                text-shadow: 
+                    0 0 10px #FFFFFF,
+                    0 0 20px #E2B686,
+                    0 0 40px #C48B57,
+                    0 0 70px #C48B57,
+                    0 0 100px rgba(196, 139, 87, 0.8);
+                opacity: 1;
+                transform: scale(1);
+            }
+            45% {
+                color: #FFFFFF;
+                text-shadow: 
+                    0 0 12px #FFFFFF,
+                    0 0 30px #E2B686,
+                    0 0 60px #C48B57,
+                    0 0 100px rgba(196, 139, 87, 0.9);
+                opacity: 1;
+                transform: scale(1.04);
+            }
+            50% {
+                color: rgba(247, 243, 235, 0.18);
+                text-shadow: none;
+                opacity: 0.25; /* LIGHT CLOSES / DIMS */
+                transform: scale(0.97);
+            }
+            54% {
+                color: #FFF8EE;
+                text-shadow: 0 0 15px #E2B686, 0 0 30px #C48B57;
+                opacity: 0.85; /* SPARK */
+                transform: scale(1);
+            }
+            57% {
+                color: rgba(247, 243, 235, 0.12);
+                text-shadow: none;
+                opacity: 0.18; /* DIMS */
+                transform: scale(0.97);
+            }
+            62% {
+                color: #FFFFFF;
+                text-shadow: 
+                    0 0 15px #FFFFFF,
+                    0 0 35px #E2B686,
+                    0 0 70px #C48B57,
+                    0 0 110px rgba(196, 139, 87, 0.9);
+                opacity: 1; /* RELIGHTS FULLY */
+                transform: scale(1.03);
+            }
+        }
+
+        .secret-neon-mark {
+            font-family: var(--ffd);
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+            user-select: none;
+            animation: neonMarkGlow 3.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .secret-tag {
+            font-family: var(--ffd);
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: var(--title-weight);
+            letter-spacing: var(--title-tracking);
+            line-height: 1.3;
+            margin-bottom: 1.2rem;
+            color: var(--white);
+        }
+        .secret-sub {
+            font-size: 1.15rem;
+            color: rgba(247,243,235,0.65);
+            line-height: 2.1;
+            margin-bottom: 2rem;
+            max-width: 580px;
+        }
+        .secret-line {
+            width: 48px;
+            height: 2px;
+            background: var(--biscuit);
+            margin: 0 auto 2rem;
+            opacity: 0.4;
+        }
+        .secret-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1.6rem;
+            background: rgba(196, 139, 87, 0.1);
+            border: 1px solid rgba(196, 139, 87, 0.25);
+            border-radius: 100px;
+            font-size: 0.88rem;
+            color: var(--biscuit-l);
+            font-weight: 700;
+        }
+
+        /* ═══════════════════════════════════════════════
+           EXPERIENCE 05 — CREATIVE WALL
+           ═══════════════════════════════════════════════ */
+        .exp-wall{background:var(--cream);color:var(--coffee)}
+        .wall-img{transform:rotate(-1.5deg)}
+        .wall-img:hover{transform:rotate(.5deg) scale(1.015)}
+        .wall-steps{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+        .wall-chip{background:var(--white);border-radius:100px;padding:.75rem 1.6rem;
+            font-size:.85rem;font-weight:700;color:var(--coffee);
+            box-shadow:0 2px 10px rgba(0,0,0,.04);transition:all .3s var(--ease)}
+        .wall-chip:hover{background:var(--biscuit);color:var(--white);transform:translateY(-2px)}
+
+        /* ═══════════════════════════════════════════════
+           EXPERIENCE 06 — PASSPORT
+           ═══════════════════════════════════════════════ */
+        .exp-passport{background:var(--ink)}
+        .passport-img{transform:rotate(2deg)}
+        .passport-img:hover{transform:rotate(-1deg) scale(1.015)}
+        .passport-flow{display:flex;align-items:center;gap:1rem;margin-top:2.5rem;flex-wrap:wrap}
+        .pf-step{flex:1;min-width:80px;text-align:center;
+            background:rgba(247,243,235,.04);border:1px solid rgba(247,243,235,.06);
+            border-radius:1rem;padding:1.4rem 1rem;transition:all .4s var(--ease)}
+        .pf-step:hover{transform:translateY(-4px);background:rgba(247,243,235,.07)}
+        .pf-icon{font-size:1.8rem;margin-bottom:.4rem}
+        .pf-label{font-size:.82rem;font-weight:700}
+        .pf-arrow{color:var(--biscuit);opacity:.35;font-size:1.1rem;flex-shrink:0}
+        .passport-note{margin-top:2rem;display:flex;align-items:center;gap:.8rem;
+            padding:1.1rem 1.6rem;background:rgba(196,139,87,.08);
+            border:1px solid rgba(196,139,87,.14);border-radius:1rem}
+        .passport-note-icon{font-size:1.3rem}
+        .passport-note-text{font-size:.9rem;color:rgba(247,243,235,.7);line-height:1.7}
+
+        /* ═══════════════════════════════════════════════
+           CLOSING
+           ═══════════════════════════════════════════════ */
+        .closing{background:var(--ink);text-align:center;flex-direction:column}
+        .cl-logo{height:90px;margin:0 auto 2.5rem;filter:brightness(1.3);
+            mix-blend-mode:luminosity;opacity:.5}
+        .cl-title{
+            font-family:var(--ffd);
+            font-size:clamp(1.8rem,4.5vw,3.4rem);
+            font-weight:var(--title-weight);
+            letter-spacing:var(--title-tracking);
+            line-height:1.35;
+            margin-bottom:1rem;
+            max-width:720px;
+            margin-left:auto;margin-right:auto;
+        }
+        .cl-accent{
+            font-family:var(--ffd);
+            font-size:clamp(1.2rem,2.8vw,1.8rem);
+            color:var(--biscuit);
+            margin-bottom:.5rem;
+            font-weight:600;
+        }
+        .cl-eng{font-size:clamp(1rem,2vw,1.4rem);font-weight:800;
+            letter-spacing:.18em;color:rgba(247,243,235,.2);
+            margin-bottom:3rem}
+        .cl-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+        .cl-footer{font-size:.75rem;color:rgba(247,243,235,.2);margin-top:4rem}
+
+        /* ═══════════════════════════════════════════════
+           FLOATING FONT SWITCHER TOOL
+           ═══════════════════════════════════════════════ */
+        .font-tool {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            z-index: 10000;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            direction: rtl;
+        }
+        .font-tool-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.3rem;
+            background: rgba(26, 22, 19, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: var(--cream);
+            border: 1px solid rgba(196, 139, 87, 0.35);
+            border-radius: 100px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+        }
+        .font-tool-toggle:hover {
+            background: var(--coffee);
+            border-color: var(--biscuit);
+            transform: translateY(-2px);
+        }
+        .font-tool-toggle svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--biscuit);
+        }
+        .font-tool-panel {
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 0;
+            width: 320px;
+            background: rgba(22, 18, 15, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(196, 139, 87, 0.25);
+            border-radius: 1.4rem;
+            padding: 1.2rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px) scale(0.96);
+            transition: all 0.35s var(--ease);
+        }
+        .font-tool-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .font-tool-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: var(--biscuit);
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .font-tool-subtitle {
+            font-size: 0.68rem;
+            color: rgba(247,243,235,0.4);
+            font-weight: normal;
+        }
+        .font-presets {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .font-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: rgba(247,243,235,0.04);
+            border: 1px solid rgba(247,243,235,0.06);
+            border-radius: 0.9rem;
+            color: var(--cream);
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            text-align: right;
+            width: 100%;
+        }
+        .font-btn:hover {
+            background: rgba(196,139,87,0.12);
+            border-color: rgba(196,139,87,0.3);
+            transform: translateX(-3px);
+        }
+        .font-btn.active {
+            background: rgba(196,139,87,0.22);
+            border-color: var(--biscuit);
+            color: var(--white);
+        }
+        .font-btn-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .font-btn-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .font-btn-desc {
+            font-size: 0.68rem;
+            color: rgba(247,243,235,0.45);
+        }
+        .font-btn-preview {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--biscuit);
+            margin-right: 0.5rem;
+        }
+        .font-btn.active .font-btn-preview {
+            color: var(--white);
+        }
+
+        /* ═══════════════════════════════════════════════
+           REVEAL ANIMATIONS
+           ═══════════════════════════════════════════════ */
+        .rv{opacity:0;transform:translateY(45px);
+            transition:opacity .85s var(--ease),transform .85s var(--ease)}
+        .rv-r{opacity:0;transform:translateX(45px);
+            transition:opacity .85s var(--ease),transform .85s var(--ease)}
+        .rv-s{opacity:0;transform:scale(.92);
+            transition:opacity .85s var(--ease),transform .85s var(--ease)}
+        .rv.vis,.rv-r.vis{opacity:1;transform:translate(0)}
+        .rv-s.vis{opacity:1;transform:scale(1)}
+        .stg > *:nth-child(1){transition-delay:.05s}
+        .stg > *:nth-child(2){transition-delay:.12s}
+        .stg > *:nth-child(3){transition-delay:.2s}
+        .stg > *:nth-child(4){transition-delay:.28s}
+        .stg > *:nth-child(5){transition-delay:.36s}
+        .stg > *:nth-child(6){transition-delay:.44s}
+        .stg > *:nth-child(7){transition-delay:.52s}
+        .stg > *:nth-child(8){transition-delay:.6s}
+    </style>
+</head>
+<body data-font="alexandria-ibm">
+    <div class="grain"></div>
+    <div class="progress" id="progressBar"></div>
+
+    <!-- Floating Font Switcher Tool -->
+    <div class="font-tool">
+        <div class="font-tool-panel" id="fontPanel">
+            <div class="font-tool-title">
+                <span>خيارات الخطوط للعميل</span>
+                <span class="font-tool-subtitle">معاينة فورية</span>
+            </div>
+            <div class="font-presets">
+                <button class="font-btn active" data-setfont="alexandria-ibm">
+                    <div class="font-btn-info">
+                        <span class="font-btn-name" style="font-family:'Alexandria',sans-serif;">١. عصري فاخر (المعتمد)</span>
+                        <span class="font-btn-desc">Alexandria + IBM Plex Sans</span>
+                    </div>
+                    <span class="font-btn-preview" style="font-family:'Alexandria',sans-serif;">أبجد</span>
+                </button>
+
+                <button class="font-btn" data-setfont="readex">
+                    <div class="font-btn-info">
+                        <span class="font-btn-name" style="font-family:'Readex Pro',sans-serif;">٢. هندسي انسيابي</span>
+                        <span class="font-btn-desc">Readex Pro (مودرن وناعم)</span>
+                    </div>
+                    <span class="font-btn-preview" style="font-family:'Readex Pro',sans-serif;">أبجد</span>
+                </button>
+
+                <button class="font-btn" data-setfont="tajawal-almarai">
+                    <div class="font-btn-info">
+                        <span class="font-btn-name" style="font-family:'Tajawal',sans-serif;">٣. أنيق دافئ</span>
+                        <span class="font-btn-desc">Tajawal + Almarai (أسلوب راقٍ)</span>
+                    </div>
+                    <span class="font-btn-preview" style="font-family:'Tajawal',sans-serif;">أبجد</span>
+                </button>
+
+                <button class="font-btn" data-setfont="elmessiri">
+                    <div class="font-btn-info">
+                        <span class="font-btn-name" style="font-family:'El Messiri',serif;">٤. فني شاعري</span>
+                        <span class="font-btn-desc">El Messiri + IBM Plex (انحناءات فاخرة)</span>
+                    </div>
+                    <span class="font-btn-preview" style="font-family:'El Messiri',serif;">أبجد</span>
+                </button>
+
+                <button class="font-btn" data-setfont="zain-alexandria">
+                    <div class="font-btn-info">
+                        <span class="font-btn-name" style="font-family:'Zain',sans-serif;">٥. كوفي متجدد</span>
+                        <span class="font-btn-desc">Zain + Alexandria (شخصية بارزة)</span>
+                    </div>
+                    <span class="font-btn-preview" style="font-family:'Zain',sans-serif;">أبجد</span>
+                </button>
+            </div>
+        </div>
+        <button class="font-tool-toggle" id="fontToggle" aria-label="تغيير الخط">
+            <svg viewBox="0 0 24 24"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5l-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
+            <span>تغيير الخط (٥ خيارات)</span>
+        </button>
+    </div>
+
+    <!-- Dots nav -->
+    <nav class="dots" id="dotsNav">
+        <a href="#cover" aria-label="الغلاف"></a>
+        <a href="#idea" aria-label="الفكرة"></a>
+        <a href="#mix" aria-label="اصنع مزيجك"></a>
+        <a href="#countries" aria-label="وجهة كل شهر"></a>
+        <a href="#cookie" aria-label="البسكويت"></a>
+        <a href="#cinema" aria-label="سينما القهوة"></a>
+        <a href="#secret" aria-label="السر"></a>
+        <a href="#wall" aria-label="جدار الإبداع"></a>
+        <a href="#passport" aria-label="الجواز"></a>
+        <a href="#closing" aria-label="الختام"></a>
+    </nav>
+
+
+    <!-- ═══════════════════════════════
+         00 — COVER
+         ═══════════════════════════════ -->
+    <section class="s cover light" id="cover">
+        <!-- 1. Interactive Cursor Glow Spotlight -->
+        <div class="hero-cursor-glow" id="heroCursorGlow" aria-hidden="true"></div>
+
+        <!-- 2. Fluid Liquid Caramel & Latte Mesh Auroras -->
+        <div class="hero-mesh-canvas" aria-hidden="true">
+            <div class="mesh-blob blob-1"></div>
+            <div class="mesh-blob blob-2"></div>
+            <div class="mesh-blob blob-3"></div>
+        </div>
+
+        <!-- 3. Modern Glassmorphic Floating Rings -->
+        <div class="hero-glass-ring glass-ring-1" aria-hidden="true"></div>
+        <div class="hero-glass-ring glass-ring-2" aria-hidden="true"></div>
+
+        <!-- 5. Cinematic Warm Ambient Light Beam -->
+        <div class="hero-light-beam" aria-hidden="true"></div>
+
+        <!-- Floating Roasted Beans -->
+        <div class="beans" aria-hidden="true">
+            <span class="bn" style="left:4%;--z:.9;animation-duration:4.5s;animation-delay:0s"></span>
+            <span class="bn" style="left:13%;--z:.6;animation-duration:6s;animation-delay:2s"></span>
+            <span class="bn" style="left:23%;--z:1.1;animation-duration:4s;animation-delay:4s"></span>
+            <span class="bn" style="left:34%;--z:.75;animation-duration:5.5s;animation-delay:1s"></span>
+            <span class="bn" style="left:45%;--z:1;animation-duration:5s;animation-delay:5s"></span>
+            <span class="bn" style="left:55%;--z:.55;animation-duration:6.5s;animation-delay:3s"></span>
+            <span class="bn" style="left:65%;--z:.9;animation-duration:4.5s;animation-delay:6s"></span>
+            <span class="bn" style="left:75%;--z:1.15;animation-duration:6s;animation-delay:.5s"></span>
+            <span class="bn" style="left:86%;--z:.65;animation-duration:5.5s;animation-delay:2.5s"></span>
+            <span class="bn" style="left:94%;--z:.7;animation-duration:6.5s;animation-delay:1.5s"></span>
+        </div>
+
+        <!-- Floating Slanted Background Cultural Cups -->
+        <div class="hero-bg-cups" aria-hidden="true">
+            <div class="hero-bg-cup hero-bg-cup-1">
+                <img src="coffe cups/saudi_cup-removebg-preview.png" alt="كوب بيسكوفا الثقافي">
+            </div>
+            <div class="hero-bg-cup hero-bg-cup-2">
+                <img src="coffe cups/egypt-cup-background.png" alt="كوب بيسكوفا الثقافي">
+            </div>
+            <div class="hero-bg-cup hero-bg-cup-3">
+                <img src="coffe cups/newyork_cup-removebg-preview.png" alt="كوب بيسكوفا الثقافي">
+            </div>
+        </div>
+
+        <!-- 6. Hero Scroll-Driven BISCOFA Cup -->
+        <div class="hero-cup-container" id="heroCupContainer" aria-hidden="true">
+            <div class="hero-cup-aura" id="heroCupAura"></div>
+            <div class="hero-cup-shadow" id="heroCupShadow"></div>
+            <img src="coffe cups/main cup.png" alt="BISCOFA Signature Cup" class="hero-cup-img" id="heroCupImg">
+        </div>
+
+        <div class="s-inner stg hero-content" id="heroContent" style="text-align:center">
+            <img src="main-logo.png" alt="BISCOFA" class="c-logo rv">
+            <h1 class="c-tag rv">المزيج <span class="accent">المثالي</span></h1>
+            <p class="c-sub rv">عرض الحملة الإبداعية — هوية · تغليف · تجربة عميل</p>
+            <div class="c-divider rv"></div>
+            <p class="c-big rv">أنت لا تطلب مشروبًا فحسب.<br><em>أنت تصنع تجربة.</em></p>
+            <div class="c-ctas rv">
+                <a href="#idea" class="btn btn-primary">اكتشف التجربة</a>
+                <a href="#closing" class="btn btn-ghost">زُر بيسكوفا</a>
+            </div>
+            <p class="c-meta rv">BISCOFA — A Perfect Mix · أغسطس ٢٠٢٦</p>
+        </div>
+
+        <div class="scroll-cue" id="heroScrollCue">
+            <div class="sc-dot"></div>
+            <span>اسحب للأسفل</span>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         CAMPAIGN IDEA
+         ═══════════════════════════════ -->
+    <section class="s idea light" id="idea">
+        <div class="s-inner">
+            <div class="rv">
+                <span class="s-idx" style="display:block;text-align:center">فكرة الحملة</span>
+            </div>
+            <h2 class="idea-q rv">ماذا يحدث عندما تصبح القهوة<br><span class="accent">أكثر من مجرد قهوة؟</span></h2>
+            <p class="idea-body rv">
+                بيسكوفا تحوّل زيارة المقهى العادية إلى رحلة غامرة من التجارب والثقافات. كل زيارة مختلفة، شخصية، لا تُنسى، وتستحق أن تُعاش وتُشارك.
+            </p>
+            <div class="idea-journey stg">
+                <div class="ij-step rv"><div class="ij-icon">☕</div><div class="ij-label">اختر</div></div>
+                <span class="ij-arrow rv">←</span>
+                <div class="ij-step rv"><div class="ij-icon">✈️</div><div class="ij-label">سافر</div></div>
+                <span class="ij-arrow rv">←</span>
+                <div class="ij-step rv"><div class="ij-icon">🎨</div><div class="ij-label">خصّص</div></div>
+                <span class="ij-arrow rv">←</span>
+                <div class="ij-step rv"><div class="ij-icon">🍪</div><div class="ij-label">تذوّق</div></div>
+                <span class="ij-arrow rv">←</span>
+                <div class="ij-step rv"><div class="ij-icon">🎬</div><div class="ij-label">شاهد</div></div>
+                <span class="ij-arrow rv">←</span>
+                <div class="ij-step rv"><div class="ij-icon">🔒</div><div class="ij-label">اكتشف</div></div>
+                <span class="ij-arrow rv">←</span>
+                <div class="ij-step rv"><div class="ij-icon">🎫</div><div class="ij-label">اجمع</div></div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         01 — MAKE YOUR MIX
+         ═══════════════════════════════ -->
+    <section class="s exp-mix light" id="mix">
+        <div class="s-inner">
+            <div class="g2">
+                <div class="rv-s">
+                    <img src="WhatsApp Image 2026-08-15 at 10.11.32 PM.jpeg" alt="Make Your Mix" class="s-img tilt">
+                </div>
+                <div class="rv-r">
+                    <span class="s-idx">تجربة ٠١</span>
+                    <h2 class="s-title">اصنع مزيجك <span class="accent">المثالي</span></h2>
+                    <p class="s-sub">
+                        في بيسكوفا، المشروب ليس مجرد طلب من القائمة. كل عميل يصنع تجربته الخاصة — غلاف مثقّب، ملصقات تعبيرية، ومزيج يعكس ذوقه ومزاجه.
+                    </p>
+                    <div class="mix-flow stg">
+                        <div class="mix-step rv"><div class="mix-step-icon">☕</div><div class="mix-step-label">اختر</div></div>
+                        <div class="mix-step rv"><div class="mix-step-icon">🔄</div><div class="mix-step-label">امزج</div></div>
+                        <div class="mix-step rv"><div class="mix-step-icon">✨</div><div class="mix-step-label">خصّص</div></div>
+                        <div class="mix-step rv"><div class="mix-step-icon">🎉</div><div class="mix-step-label">ابدع</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         ★ MONTHLY CULTURAL TAKEOVER (ALL CUPS SIDE BY SIDE)
+         ═══════════════════════════════ -->
+    <section class="s exp-countries" id="countries">
+        <!-- Ambient lighting glow -->
+        <div class="countries-ambient-glow"></div>
+
+        <div class="s-inner">
+            <!-- General Event Header & Overall Concept Description -->
+            <div class="countries-header rv">
+                <span class="s-idx" style="display:block;text-align:center">تحوّل المقهى الشهري · Monthly Cultural Takeover</span>
+                <h2 class="s-title" style="color:var(--white);">كل شهر.. وجهة وثقافة جديدة <span class="accent">تأخذك حول العالم</span></h2>
+                <p class="s-sub" style="margin:0 auto;color:rgba(247,243,235,0.72);max-width:780px;">
+                    في كل شهر، يعيش زوار بيسكوفا تجربة سفر حقيقية دون مغادرة المكان — يتحوّل المقهى بالكامل (الديكور، الإضاءة، الموسيقى، وقائمة النكهات) ليعكس روح وهوية دولة مختلفة. ومع كل كوب، يحصل العميل على غلاف تراثي مثقّب، ملصقات ثقافية، وماسكوت مميّز على الغطاء ليصنع مزيجه ويعيش تفاصيل الرحلة.
+                </p>
+            </div>
+
+            <!-- All 4 Cups Side-by-Side Gallery with Dynamic Moves -->
+            <div class="cups-gallery-grid rv-s">
+                
+                <!-- Cup 1 -->
+                <div class="cup-card">
+                    <div class="cup-float-box">
+                        <img src="coffe cups/saudi_cup-removebg-preview.png" alt="كوب بيسكوفا" class="cup-img-elem">
+                    </div>
+                </div>
+
+                <!-- Cup 2 -->
+                <div class="cup-card">
+                    <div class="cup-float-box">
+                        <img src="coffe cups/egypt-cup-background.png" alt="كوب بيسكوفا" class="cup-img-elem">
+                    </div>
+                </div>
+
+                <!-- Cup 3 -->
+                <div class="cup-card">
+                    <div class="cup-float-box">
+                        <img src="coffe cups/france_cup-removebg-preview.png" alt="كوب بيسكوفا" class="cup-img-elem">
+                    </div>
+                </div>
+
+                <!-- Cup 4 -->
+                <div class="cup-card">
+                    <div class="cup-float-box">
+                        <img src="coffe cups/newyork_cup-removebg-preview.png" alt="كوب بيسكوفا" class="cup-img-elem">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- General Event Mechanics Summary -->
+            <div class="takeover-summary-banner rv">
+                <div class="ts-item">
+                    <div class="ts-icon">🏛️</div>
+                    <div>
+                        <div class="ts-title">تحوّل الديكور بالكامل</div>
+                        <div class="ts-desc">تفاصيل المكان، الجلسات، الإضاءات، وقائمة الموسيقى تتغير كلياً لتعكس ثقافة وروح الدولة المختارة.</div>
+                    </div>
+                </div>
+
+                <div class="ts-item">
+                    <div class="ts-icon">🎨</div>
+                    <div>
+                        <div class="ts-title">أكواب وملصقات حصرية</div>
+                        <div class="ts-desc">غلاف مثقّب وماسكوت خاص لكل ثقافة مع باقة ملصقات تعبيرية ليزيّن العميل كوبه الخاص.</div>
+                    </div>
+                </div>
+
+                <div class="ts-item">
+                    <div class="ts-icon">☕</div>
+                    <div>
+                        <div class="ts-title">مذاق موسمي مبتكر</div>
+                        <div class="ts-desc">مشروب موسمي حصري طوال الشهر مستوحى من نكهات وتقاليد تحضير القهوة في وجهة الشهر.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         02 — SIGNATURE COOKIE
+         ═══════════════════════════════ -->
+    <section class="s exp-cookie" id="cookie">
+        <div class="cookie-split">
+            <div class="cookie-photo rv-s">
+                <img src="WhatsApp Image 2026-08-15 at 10.04.39 PM (1).jpeg" alt="BISCOFA Signature Cookie">
+            </div>
+            <div class="cookie-body rv-r">
+                <span class="s-idx">تجربة ٠٢</span>
+                <h2 class="s-title" style="color:var(--cream)">قطعة صغيرة من <span class="accent">بيسكوفا</span></h2>
+                <p class="cookie-tagline">كل مشروب يأتي مع قطعة صغيرة من بيسكوفا.</p>
+                <p class="cookie-text">
+                    بسكويت بيسكوفا المميّز يحمل ختم العلامة ويُقدَّم مع كل طلب. ليس مجرد إضافة — بل جزء أساسي من تجربة بيسكوفا. عنصر يميّز العلامة ويُعرّف التجربة من أول لحظة.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         03 — COFFEE CINEMA
+         ═══════════════════════════════ -->
+    <section class="s exp-cinema" id="cinema">
+        <div class="s-inner">
+            <div class="g2">
+                <div class="rv-s">
+                    <div class="cinema-frame">
+                        <img src="cinema.jpeg" alt="سينما القهوة في بيسكوفا" class="cinema-clear-img">
+                        <div class="cinema-frame-badge">
+                            <span>🎬</span>
+                            <span>Movie Night Experience</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rv-r">
+                    <span class="s-idx">تجربة ٠٣</span>
+                    <h2 class="s-title">قهوة. أفلام.<br><span class="accent">أمسية مختلفة.</span></h2>
+                    <p class="s-sub">
+                        داخل بيسكوفا، تجربة سينمائية حقيقية ومبتكرة. مساحة مخصّصة لعروض الأفلام السينمائية والأمسيات الهادئة، جلسات مريحة مع إضاءات دافئة، لتستمتع بمزيج فريد يجمع بين نكهة القهوة وسحر السينما.
+                    </p>
+                    <div class="cinema-chips stg">
+                        <span class="cinema-chip rv">🎬 ليالي أفلام حصرية</span>
+                        <span class="cinema-chip rv">🍿 عروض ومناقشات</span>
+                        <span class="cinema-chip rv">☕ قهوة + سينما</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         04 — THE SECRET (LIGHTING & CLOSING NEON EFFECT)
+         ═══════════════════════════════ -->
+    <section class="s exp-secret" id="secret">
+        <div class="s-inner">
+            <div class="secret-stage stg">
+                <span class="s-idx rv" style="display:block;text-align:center">تجربة ٠٤</span>
+                
+                <div class="secret-neon-box rv-s">
+                    <div class="secret-neon-ring"></div>
+                    <div class="secret-neon-mark">؟</div>
+                </div>
+
+                <h2 class="secret-tag rv">شيءٌ ما <span class="accent">ينتظرك</span></h2>
+                <p class="secret-sub rv">
+                    هناك مشروب في بيسكوفا لن نخبرك عنه. لن نريك صورته. ولن نكشف مكوّناته.<br>
+                    بعض الأشياء أجمل وأروع عندما تكتشفها بنفسك.
+                </p>
+                <div class="rv"><div class="secret-line"></div></div>
+                <p class="secret-hint rv">🔒 السر ينكشف فقط لمن يكمل الرحلة ويختم جوازه.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         05 — CREATIVE WALL
+         ═══════════════════════════════ -->
+    <section class="s exp-wall light" id="wall">
+        <div class="s-inner">
+            <div class="g2">
+                <div class="rv-r">
+                    <span class="s-idx">تجربة ٠٥</span>
+                    <h2 class="s-title">أنت تبدعه.<br><span class="accent">ونحن نعلّقه على الجدار.</span></h2>
+                    <p class="s-sub">
+                        عندما يصنع عميل مزيجًا مميّزًا ومبتكرًا، يصبح جزءًا من جدار الإبداع في بيسكوفا. إبداعك يتحوّل إلى جزء من هوية المكان — لأن أفضل المزجات تستحق أن تُعلَّق.
+                    </p>
+                    <div class="wall-steps stg">
+                        <span class="wall-chip rv">🎨 ابدع مزيجك</span>
+                        <span class="wall-chip rv">📸 شاركه</span>
+                        <span class="wall-chip rv">🖼️ علّقه على الجدار</span>
+                        <span class="wall-chip rv">🏆 كن جزءًا من بيسكوفا</span>
+                    </div>
+                </div>
+                <div class="rv-s">
+                    <img src="900ac59a-e6c2-4323-9fca-29bf9ed4b4dc.jfif" alt="Creative Wall" class="s-img wall-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         06 — PASSPORT
+         ═══════════════════════════════ -->
+    <section class="s exp-passport" id="passport">
+        <div class="s-inner">
+            <div class="g2">
+                <div class="rv-s">
+                    <img src="4d11df8b-341e-4ba6-9426-cb298de068c4.jfif" alt="Café Passport" class="s-img passport-img">
+                </div>
+                <div class="rv-r">
+                    <span class="s-idx">تجربة ٠٦</span>
+                    <h2 class="s-title">أكمل جوازك.<br><span class="accent">واكتشف السر.</span></h2>
+                    <p class="s-sub">
+                        مع كل مشروب، تحصل على جواز بيسكوفا الحقيقي. ١٠ أصناف تنتظرك. اجمع كل الأختام خلال شهر واحد — واكتشف المشروب السري الخاص.
+                    </p>
+                    <div class="passport-flow stg">
+                        <div class="pf-step rv"><div class="pf-icon">☕</div><div class="pf-label">جرّب</div></div>
+                        <span class="pf-arrow rv">←</span>
+                        <div class="pf-step rv"><div class="pf-icon">📌</div><div class="pf-label">اختم</div></div>
+                        <span class="pf-arrow rv">←</span>
+                        <div class="pf-step rv"><div class="pf-icon">🔓</div><div class="pf-label">اكتشف السر</div></div>
+                    </div>
+                    <div class="passport-note rv">
+                        <span class="passport-note-icon">🎫</span>
+                        <span class="passport-note-text">جواز حقيقي مطبوع · ١٠ أصناف · شهر واحد · المشروب السري الخاص</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════
+         CLOSING
+         ═══════════════════════════════ -->
+    <section class="s closing" id="closing">
+        <div class="s-inner stg" style="text-align:center">
+            <img src="main-logo.png" alt="BISCOFA" class="c-logo rv">
+            <h2 class="cl-title rv">بيسكوفا ليست مجرد مكان لاحتساء القهوة.<br><span class="accent">إنها مكان لتصنع تجربتك الخاصة.</span></h2>
+            <p class="cl-accent rv">المزيج المثالي ♡</p>
+            <p class="cl-eng rv">A PERFECT MIX</p>
+            <div class="cl-ctas rv">
+                <a href="#" class="btn btn-primary">زُر بيسكوفا</a>
+                <a href="#" class="btn btn-ghost">تابع الرحلة</a>
+            </div>
+            <p class="cl-footer rv">BISCOFA © ٢٠٢٦ — عرض حملة سري</p>
+        </div>
+    </section>
+
+
+    <script>
+    (function(){
+        /* ═══════════════════════════════════════════
+           TYPOGRAPHY SWITCHER
+           ═══════════════════════════════════════════ */
+        const fontToggle = document.getElementById('fontToggle');
+        const fontPanel = document.getElementById('fontPanel');
+        const fontBtns = document.querySelectorAll('.font-btn');
+
+        fontToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fontPanel.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!fontPanel.contains(e.target) && !fontToggle.contains(e.target)) {
+                fontPanel.classList.remove('open');
+            }
+        });
+
+        fontBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const fontKey = btn.getAttribute('data-setfont');
+                document.body.setAttribute('data-font', fontKey);
+                
+                fontBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                try { localStorage.setItem('biscofa_font_pref', fontKey); } catch(err){}
+            });
+        });
+
+        try {
+            const savedFont = localStorage.getItem('biscofa_font_pref');
+            if (savedFont) {
+                document.body.setAttribute('data-font', savedFont);
+                fontBtns.forEach(b => {
+                    b.classList.toggle('active', b.getAttribute('data-setfont') === savedFont);
+                });
+            }
+        } catch(err){}
+
+        /* ═══════════════════════════════════════════
+           3D TILT EFFECT ON CUP CARDS
+           ═══════════════════════════════════════════ */
+        const cupCards = document.querySelectorAll('.cup-card');
+        cupCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const rotX = -(y / rect.height) * 14;
+                const rotY = (x / rect.width) * 14;
+                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        /* ═══════════════════════════════════════════
+           INTERACTIVE HERO CURSOR GLOW
+           ═══════════════════════════════════════════ */
+        const heroCover = document.getElementById('cover');
+        if (heroCover) {
+            heroCover.addEventListener('mousemove', (e) => {
+                const rect = heroCover.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                heroCover.style.setProperty('--mx', `${x.toFixed(1)}%`);
+                heroCover.style.setProperty('--my', `${y.toFixed(1)}%`);
+            });
+        }
+
+        /* ═══════════════════════════════════════════════
+           PROGRESS BAR & DOT NAVIGATION
+           ═══════════════════════════════════════════════ */
+        const bar = document.getElementById('progressBar');
+        const onScroll = () => {
+            const h = document.documentElement.scrollHeight - window.innerHeight;
+            if(h > 0) bar.style.width = (window.scrollY / h * 100) + '%';
+        };
+
+        const nav = document.getElementById('dotsNav');
+        const dots = nav.querySelectorAll('a');
+        const slides = document.querySelectorAll('.s');
+        const lightIds = new Set(['cover','idea','mix','wall']);
+
+        const updateDots = () => {
+            let cur = '';
+            slides.forEach(s => {
+                if(window.scrollY >= s.offsetTop - window.innerHeight * .45) cur = s.id;
+            });
+            dots.forEach(d => d.classList.toggle('on', d.getAttribute('href') === '#' + cur));
+            nav.classList.toggle('on-light', lightIds.has(cur));
+        };
+
+        window.addEventListener('scroll', () => { onScroll(); updateDots(); }, {passive:true});
+        updateDots();
+
+        /* ═══════════════════════════════════════════════
+           SCROLL REVEAL OBSERVER
+           ═══════════════════════════════════════════════ */
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); }});
+        }, {threshold:.1});
+        document.querySelectorAll('.rv,.rv-r,.rv-s').forEach(el => obs.observe(el));
+
+        /* ═══════════════════════════════════════════
+           ARROW KEYS NAVIGATION
+           ═══════════════════════════════════════════ */
+        const ids = [...slides].map(s => s.id);
+        document.addEventListener('keydown', e => {
+            if(e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+            e.preventDefault();
+            let idx = 0;
+            slides.forEach((s,i) => { if(window.scrollY >= s.offsetTop - window.innerHeight * .4) idx = i; });
+            const next = e.key === 'ArrowDown' ? Math.min(idx+1, ids.length-1) : Math.max(idx-1, 0);
+            document.getElementById(ids[next]).scrollIntoView({behavior:'smooth'});
+        });
+
+        /* ═══════════════════════════════════════════
+           HERO SCROLL-DRIVEN BISCOFA CUP (GSAP + SCROLLTRIGGER)
+           ═══════════════════════════════════════════ */
+        function initHeroCupScroll() {
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) return;
+
+            const cover = document.getElementById('cover');
+            const cup = document.getElementById('heroCupContainer');
+            const cupImg = document.getElementById('heroCupImg');
+            const cupShadow = document.getElementById('heroCupShadow');
+            const cupAura = document.getElementById('heroCupAura');
+            const content = document.getElementById('heroContent');
+            const cue = document.getElementById('heroScrollCue');
+
+            if (!cover || !cup || !cupImg) return;
+
+            function getOffsets() {
+                const coverRect = cover.getBoundingClientRect();
+                const cupRect = cup.getBoundingClientRect();
+                const curX = gsap.getProperty(cup, "x") || 0;
+                const curY = gsap.getProperty(cup, "y") || 0;
+
+                const cupOrigX = (cupRect.left - curX) + cupRect.width / 2;
+                const cupOrigY = (cupRect.top - curY) + cupRect.height / 2;
+
+                const targetX = coverRect.left + coverRect.width / 2;
+                const targetY = coverRect.top + coverRect.height / 2;
+
+                return {
+                    x: targetX - cupOrigX,
+                    y: targetY - cupOrigY
+                };
+            }
+
+            // Set initial 3D transform values
+            gsap.set(cup, { transformPerspective: 1200 });
+            gsap.set(cupImg, { rotationY: -3, rotationZ: -2, transformStyle: "preserve-3d" });
+
+            const isMobile = window.innerWidth <= 768;
+            const scrollDistance = isMobile ? "+=100%" : "+=140%";
+
+            const heroTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: cover,
+                    start: "top top",
+                    end: scrollDistance,
+                    pin: true,
+                    scrub: 1,
+                    anticipatePin: 1,
+                    invalidateOnRefresh: true,
+                    onUpdate: (self) => {
+                        const p = self.progress;
+                        if (cupAura) {
+                            cupAura.style.opacity = Math.min(p * 1.5, 0.75);
+                        }
+                    }
+                }
+            });
+
+            // 0% -> 35%: Hero text, cues & background cups fade out cleanly
+            heroTl.to([content, cue, ".hero-bg-cups"], {
+                opacity: 0,
+                y: -35,
+                scale: 0.94,
+                ease: "power1.out",
+                duration: 0.35
+            }, 0);
+
+            // 0% -> 60%: Cup smoothly glides to center, scales up, and rotates in 3D
+            heroTl.to(cup, {
+                x: () => getOffsets().x,
+                y: () => getOffsets().y,
+                scale: isMobile ? 1.25 : 1.45,
+                ease: "power2.inOut",
+                duration: 0.6
+            }, 0);
+
+            heroTl.to(cupImg, {
+                rotationY: 12,
+                rotationZ: -3,
+                ease: "power2.inOut",
+                duration: 0.6
+            }, 0);
+
+            heroTl.to(cupShadow, {
+                opacity: 0.12,
+                scale: 0.55,
+                y: 25,
+                duration: 0.6
+            }, 0);
+
+            // 60% -> 100%: Cup becomes giant, moves upward as cinematic transition entering #idea
+            heroTl.to(cup, {
+                scale: isMobile ? 2.1 : 2.55,
+                y: () => getOffsets().y - window.innerHeight * (isMobile ? 0.12 : 0.18),
+                ease: "power1.in",
+                duration: 0.4
+            }, 0.6);
+
+            heroTl.to(cupImg, {
+                rotationY: -4,
+                rotationZ: 1,
+                ease: "power1.inOut",
+                duration: 0.4
+            }, 0.6);
+
+            heroTl.to(cup, {
+                opacity: 0.04,
+                duration: 0.18
+            }, 0.82);
+
+            // Refresh on resize
+            window.addEventListener('resize', () => {
+                ScrollTrigger.refresh();
+            });
+        }
+
+        // Initialize Hero Scroll
+        window.addEventListener('DOMContentLoaded', initHeroCupScroll);
+        // Also call immediately if DOM is already parsed
+        if (document.readyState !== 'loading') {
+            initHeroCupScroll();
+        }
+    })();
+    </script>
+</body>
+</html>
